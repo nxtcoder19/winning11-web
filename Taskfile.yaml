@@ -22,6 +22,15 @@ tasks:
     cmds:
       - PORT=4000 pnpm start
 
+  init:shacdn:
+    cmds:
+      - npx shadcn@latest init
+
+  gen:components:
+    interactive: true
+    cmds:
+      - bash ./ui-component.sh
+
   container:build:
     preconditions:
       - sh: '[[ -n "{{.tag}}" ]]'
