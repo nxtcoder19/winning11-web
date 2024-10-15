@@ -3,7 +3,7 @@
 # Function to check if a component exists
 component_exists() {
     local component_name="$1"
-    if [ -f "components/ui/$component_name.jsx" ]; then
+    if [ -f "src/components/ui/$component_name.tsx" ]; then
         return 0  # Component exists
     else
         return 1  # Component does not exist
@@ -34,3 +34,4 @@ add_component select
 add_component dropdown-menu
 add_component radio-group
 add_component textarea
+add_component form
