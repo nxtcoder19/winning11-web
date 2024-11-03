@@ -25,7 +25,7 @@ export const makeApiCall = async <T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: any
 ): Promise<ApiResponse<T>> => {
-  const userCookie = Cookies.get('userSessionKey'); // Fetch cookie using js-cookie
+  const userCookie = Cookies.get('w11-Sessionid'); // Fetch cookie using js-cookie
   const headers: Record<string, string> = {};
 
   if (userCookie) {

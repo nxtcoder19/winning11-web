@@ -21,6 +21,24 @@ interface SignInResponse {
     id: string;
 }
 
+interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  verifyPassword: string;
+  isAgent: boolean;
+}
+
+interface SessionData {
+  userId: string;
+  mobileNo?: number; // Optional for regular users
+  email?: string;    // Optional for admin users
+  isAdmin: boolean;
+}
+
+
+
 const adminSignup = async (
     payload: SignUpPayLoad
   ): Promise<ApiResponse<SignupResponse>> => {
@@ -35,9 +53,22 @@ const adminSignIn = async (
     return await makeApiCall<SignInResponse>(API_CALL_TYPE.HTTP_POST, url, payload);
   };
 
+  const getAdminUser = async ({email}: {email: string}): Promise<ApiResponse<AdminUser>> => {
+    const url = `auth/get-admin/${email}`; // Replace with the actual endpoint if different
+    return await makeApiCall<AdminUser>(API_CALL_TYPE.HTTP_GET, url);
+  };
+
+  const getSessionData = async (): Promise<ApiResponse<SessionData>> => {
+    const url = '.secret/session-data'; // Path for session data endpoint
+    return await makeApiCall<SessionData>(API_CALL_TYPE.HTTP_GET, url);
+  };
+  
+
 export const authRepository = {
     adminSignup,
     adminSignIn,
+    getAdminUser,
+    getSessionData,
 };
 
-//piyush.acet@gmail.com pass: 12345
+//piyush@gmail.com pass: 12345

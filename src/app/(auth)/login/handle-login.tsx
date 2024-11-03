@@ -6,13 +6,19 @@ import { RoutePath } from "@/common/route-path";
 import { handleError } from "@/helpers/errors";
 import Yup from "@/helpers/yup";
 import useForm from "@/hooks/use-form";
+import { useToast } from "@/hooks/use-toast";
 import { FacebookIcon, TwitterIcon } from "@/icons/react-icons";
 import { authRepository } from "@/server/repository/auth-repository";
+import { useRouter } from 'next/navigation';
+
 
 
 export const HandleLogin = () => {
 
     const authApi = authRepository
+    const { toast } = useToast()
+    const router = useRouter();
+
 
     const { values, handleChange, handleSubmit, resetValues, isLoading } =
     useForm({
@@ -38,7 +44,10 @@ export const HandleLogin = () => {
 
               if (response.isSuccess) {
                 console.log('Login successful!', response.data);
-              } else {
+                toast({
+                    description: "Your message has been sent.",
+                  });
+                  router.push('/home');              } else {
                 console.error('Login failed:', response.message);
               }
           
