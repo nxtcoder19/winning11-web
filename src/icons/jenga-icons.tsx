@@ -1,3 +1,3 @@
 export {
-    ArrowsOut, BellRinging
+    ArrowsOut, BellRinging, Database
 } from "@jengaicons/react";

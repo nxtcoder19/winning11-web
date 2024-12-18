@@ -23,12 +23,24 @@ export interface Match {
   }
 
   const getMatchList = async (): Promise<ApiResponse<MatchListResponse>> => {
-    const url = 'match/list'; // Adjust if the endpoint path is different
+    const url = 'match/list'; 
     return await makeApiCall<MatchListResponse>(API_CALL_TYPE.HTTP_GET, url);
+  };
+
+  const getMatch = async ({matchId}: {matchId: string}): Promise<ApiResponse<Match>> => {
+    const url = `match/get/${matchId}`; 
+    return await makeApiCall<Match>(API_CALL_TYPE.HTTP_GET, url);
+  };
+
+  const updateMatch = async ({matchId, matchData}: {matchId: string, matchData: Match}): Promise<ApiResponse<Match>> => {
+    const url = `match/update/${matchId}`; 
+    return await makeApiCall<Match>(API_CALL_TYPE.HTTP_PUT, url, matchData);
   };
   
   // Export match repository functions
   export const matchRepository = {
     getMatchList,
+    getMatch,
+    updateMatch,
   };
   

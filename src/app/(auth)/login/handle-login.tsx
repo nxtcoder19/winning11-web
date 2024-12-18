@@ -19,7 +19,6 @@ export const HandleLogin = () => {
     const { toast } = useToast()
     const router = useRouter();
 
-
     const { values, handleChange, handleSubmit, resetValues, isLoading } =
     useForm({
       initialValues:
@@ -47,7 +46,7 @@ export const HandleLogin = () => {
                 toast({
                     description: "Your message has been sent.",
                   });
-                  router.push('/home');              } else {
+                  router.push('/cricket/upcoming')
                 console.error('Login failed:', response.message);
               }
           
