@@ -8,27 +8,42 @@ export interface Player {
     displayName: string;
     teamName: string;
 
-    playerType: PlayerType;
+    playerType: string;
     playerImage: string;
     playerPoints: number;
     playerCredit: number;
 
     isPlayedLastMatch: boolean;
-    playerStatus: PlayerStatus;
+    playerStatus: string;
 }
 
-enum PlayerType {
-    WicketKeeper = "wicketkeeper",
-    Batsman = "batsman",
-    AllRounder = "all-rounder",
-    Bowler = "bowler"
+export interface PlayerIn {
+    matchId: string;
+    playerName: string;
+    displayName: string;
+    teamName: string;
+
+    playerType: string;
+    playerImage: string;
+    playerPoints: number;
+    playerCredit: number;
+
+    isPlayedLastMatch: boolean;
+    playerStatus: string;
 }
 
-enum PlayerStatus {
-    Announced = "announced",
-    UnAnnounced = "unannounced",
-    Substitute = "substitute"
-}
+// enum PlayerType {
+//     WicketKeeper = "wicketkeeper",
+//     Batsman = "batsman",
+//     AllRounder = "all-rounder",
+//     Bowler = "bowler"
+// }
+
+// enum PlayerStatus {
+//     Announced = "announced",
+//     UnAnnounced = "unannounced",
+//     Substitute = "substitute"
+// }
 
 export interface PlayerListResponse {
     playerList: Player[];
@@ -39,7 +54,13 @@ const getPlayerList = async ({matchId}: {matchId: string}): Promise<ApiResponse<
     return await makeApiCall<PlayerListResponse>(API_CALL_TYPE.HTTP_GET, url);
 };
 
+const addPlayer = async ({ playerData}: { playerData: PlayerIn}): Promise<ApiResponse<Player>> => {
+    const url = "player/add"; 
+    return await makeApiCall<Player>(API_CALL_TYPE.HTTP_POST, url, playerData);
+};
+
 // Export player repository functions
 export const playerRepository = {
     getPlayerList,
+    addPlayer,
 };

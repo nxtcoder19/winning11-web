@@ -1,10 +1,14 @@
 "use client"
 import { Player } from "@/server/repository/player-repository";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "primereact/button";
 import { Column } from 'primereact/column';
 import { DataTable, DataTableRowClickEvent } from 'primereact/datatable';
 
 export const PlayersResource = ({playersList}: {playersList: Player[]}) => {
+
+    const router = useRouter();
+    const params = useParams()
 
     const onRowClick = (event: DataTableRowClickEvent) => {
         const match = event.data as Player; // Cast event.data to Match type
@@ -16,7 +20,7 @@ export const PlayersResource = ({playersList}: {playersList: Player[]}) => {
         <div>
             <div className="flex flex-row justify-between items-center">
                 <h1 className="text-3xl font-bold">Players</h1>
-                <Button label="Add Player" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
+                <Button onClick={() => router.push(`/match/${params.matchId}/add-player`)} label="Add Player" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
             </div>
             <div className="card py-4">
                 <DataTable  value={playersList} paginator rows={10}

@@ -123,7 +123,8 @@ export const HandleAddContest = () => {
     // };
 
     return (
-        <div className="card flex-1 justify-content-center">        
+        <div className="card flex-1 justify-content-center">   
+            <Toast ref={toast} position="bottom-left"/>     
             <Stepper  ref={stepperRef} style={{ flexBasis: '50rem' }}>
                 <StepperPanel header="Contest Details">
                     <div className="flex flex-col h-12rem">
