@@ -32,7 +32,7 @@ export const HandleAddPlayer = () => {
 
     const show = () => {
       toast.current?.show({ severity: 'success', summary: 'Info', detail: 'Your player details has been added successfully' });
-  };
+    };
 
     const {values, handleChange, handleSubmit, isLoading} = useForm({
         initialValues: {
@@ -85,10 +85,6 @@ export const HandleAddPlayer = () => {
             }
         }
     })
-
-    // const show = () => {
-    //     toast.current?.show({ severity: 'success', summary: 'Info', detail: 'Your match details has been updated successfully' });
-    // };
 
     return (
         <div className="flex flex-col gap-4 p-4">

@@ -1,12 +1,13 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function MatchTopBar() {
     const pathname = usePathname();
     const params = useParams()
     const searchParams = useSearchParams()
+    const router = useRouter()
 
     const selectedMatchId = params.matchId
     const sportsType = searchParams.get('sportsType')
@@ -18,11 +19,29 @@ export default function MatchTopBar() {
         // { label: "Teams", href: "/cricket/upcoming/teams" },
     ];
 
+    const getMatchBasedOnSportsType = (sportsType: string) => {
+        if (sportsType === "Cricket") {
+            return "cricket";
+        } else if (sportsType === "Football") {
+            return "football";
+        } else if (sportsType === "Basket Ball") {
+            return "basketball";
+        } else if (sportsType === "Volley Ball") {
+            return "volleyball";
+        }
+    }
+
     // Get the tabs for the current route or use a default
     // const currentTabs = tabs[baseRoute] || [];
 
     return (
         <div className="bg-white border-b p-4 shadow-md flex gap-8">
+            <button
+                onClick={() => router.push(`/${getMatchBasedOnSportsType(sportsType || "cricket")}`)}
+                className="text-gray-600 hover:text-indigo-600 font-semibold"
+            >
+                ← Back 
+            </button>
             {matchTabs.map((tab) => (
                 // <Link key={tab.href} href={tab.href}>
                 //     <a className="text-gray-600 hover:text-indigo-600 font-semibold">{tab.label}</a>

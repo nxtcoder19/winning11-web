@@ -13,6 +13,7 @@ export const ContestsResource = ({contestList}: {contestList: Contest[]}) => {
     const onRowClick = (event: DataTableRowClickEvent) => {
         const contest = event.data as Contest; // Cast event.data to Match type
         // router.push(`/match/${match.id}`);
+        router.push(`/match/${params.matchId}/contest/${contest.id}/settings`);
         console.log("Row clicked:", contest.contestName);
     };
 
