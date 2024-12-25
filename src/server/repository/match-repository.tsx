@@ -39,6 +39,10 @@ export interface Match {
     matchList: Match[];
   }
 
+  export interface DeleteMatchResponse {
+    status: boolean;
+  }
+
   const addMatch = async ({matchData}: {matchData: MatchIn}): Promise<ApiResponse<Match>> => {
     const url = 'match/add'; 
     return await makeApiCall<Match>(API_CALL_TYPE.HTTP_POST, url, matchData);
@@ -54,9 +58,14 @@ export interface Match {
     return await makeApiCall<Match>(API_CALL_TYPE.HTTP_GET, url);
   };
 
-  const updateMatch = async ({matchId, matchData}: {matchId: string, matchData: Match}): Promise<ApiResponse<Match>> => {
+  const updateMatch = async ({matchId, matchData}: {matchId: string, matchData: MatchIn}): Promise<ApiResponse<Match>> => {
     const url = `match/update/${matchId}`; 
     return await makeApiCall<Match>(API_CALL_TYPE.HTTP_PUT, url, matchData);
+  };
+
+  const deleteMatch = async ({matchId}: {matchId: string}): Promise<ApiResponse<DeleteMatchResponse>> => {
+    const url = `match/delete/${matchId}`; 
+    return await makeApiCall<DeleteMatchResponse>(API_CALL_TYPE.HTTP_DELETE, url);
   };
   
   // Export match repository functions
@@ -65,5 +74,6 @@ export interface Match {
     getMatchList,
     getMatch,
     updateMatch,
+    deleteMatch,
   };
   

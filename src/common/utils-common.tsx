@@ -33,3 +33,15 @@ export const formatDate = (date: Nullable<Date>) => {
     now.setHours(hours, minutes, seconds);
     return now;
   };
+
+  export const getMatchBasedOnSportsType = (sportsType: string) => {
+    if (sportsType === "Cricket") {
+        return "cricket";
+    } else if (sportsType === "Football") {
+        return "football";
+    } else if (sportsType === "Basket Ball") {
+        return "basketball";
+    } else if (sportsType === "Volley Ball") {
+        return "volleyball";
+    }
+}

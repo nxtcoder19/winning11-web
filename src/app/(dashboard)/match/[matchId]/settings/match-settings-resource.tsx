@@ -49,7 +49,6 @@ export const MatchSettings = ({matchDetails}: {matchDetails: Match}) => {
                 const response = await matchApi.updateMatch({
                     matchId: matchDetails.id,
                     matchData: {
-                        id: matchDetails.id,
                         displayName: matchDetails.displayName,
                         sportsType: val.sportsType,
                         matchStatus: val.matchStatus,

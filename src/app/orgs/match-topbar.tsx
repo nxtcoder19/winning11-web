@@ -1,4 +1,5 @@
 "use client";
+import { getMatchBasedOnSportsType } from "@/common/utils-common";
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -18,18 +19,6 @@ export default function MatchTopBar() {
         { label: "Settings ", href: `/match/${selectedMatchId}/settings?sportsType=${sportsType}` },
         // { label: "Teams", href: "/cricket/upcoming/teams" },
     ];
-
-    const getMatchBasedOnSportsType = (sportsType: string) => {
-        if (sportsType === "Cricket") {
-            return "cricket";
-        } else if (sportsType === "Football") {
-            return "football";
-        } else if (sportsType === "Basket Ball") {
-            return "basketball";
-        } else if (sportsType === "Volley Ball") {
-            return "volleyball";
-        }
-    }
 
     // Get the tabs for the current route or use a default
     // const currentTabs = tabs[baseRoute] || [];

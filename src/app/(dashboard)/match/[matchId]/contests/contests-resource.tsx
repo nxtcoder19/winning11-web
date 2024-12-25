@@ -1,6 +1,6 @@
 "use client"
 import { Contest } from "@/server/repository/contest-repository";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "primereact/button";
 import { Column } from 'primereact/column';
 import { DataTable, DataTableRowClickEvent } from 'primereact/datatable';
@@ -8,12 +8,14 @@ import { DataTable, DataTableRowClickEvent } from 'primereact/datatable';
 export const ContestsResource = ({contestList}: {contestList: Contest[]}) => {
 
     const router = useRouter();
-    const params = useParams()
+    const params = useParams();
+    const searchParams = useSearchParams();
+
+    const sportsType = searchParams.get('sportsType');
 
     const onRowClick = (event: DataTableRowClickEvent) => {
-        const contest = event.data as Contest; // Cast event.data to Match type
-        // router.push(`/match/${match.id}`);
-        router.push(`/match/${params.matchId}/contest/${contest.id}/settings`);
+        const contest = event.data as Contest;
+        router.push(`/match/${params.matchId}/contest/${contest.id}/settings?sportsType=${sportsType}`)
         console.log("Row clicked:", contest.contestName);
     };
 
