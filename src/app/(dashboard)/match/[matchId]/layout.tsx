@@ -9,11 +9,14 @@ export default function MatchLayout({
 }>) {
 
     const pathname = usePathname();
-    const showTopBar = !pathname.includes("add-");
+    // const showTopBar = !pathname.includes("add-");
+    const showTopBar = 
+        !pathname.includes("add-") && 
+        !(pathname.match(/\/contest\/id-.+/) || pathname.match(/\/player\/id-.+/));
 
     return (
         <div className="flex">
-            <div className="flex-1">
+            <div className="flex-1 h-screen overflow-y-auto">
                 {/* <MatchTopBar /> */}
                 {showTopBar && <MatchTopBar />}
                 {children}

@@ -11,7 +11,7 @@ type TextfieldProps = {
 
 export const Textfield = ({ type, name, placeholder, value, disabled, onChange }: TextfieldProps) => {
     return <input
-        className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
+        className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded cursor-pointer"
         type={type}
         placeholder={placeholder}
         name={name}

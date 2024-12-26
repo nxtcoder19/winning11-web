@@ -71,7 +71,7 @@ export const UpComingMatchResource = ({ matchList }: { matchList: Match[] }) => 
         <div>
             <div className="flex flex-row justify-between items-center">
                 <h1 className="text-3xl font-bold">Upcoming Matches</h1>
-                <Button label="Add Match" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
+                <Button onClick={() => router.push("/add-match?sportsType=Cricket")} label="Add Match" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
             </div>
             <div className="card py-4">
                 <DataTable value={matchList} tableStyle={{ minWidth: '50rem' }}

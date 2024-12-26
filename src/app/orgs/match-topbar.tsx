@@ -1,12 +1,14 @@
 "use client";
+import { getMatchBasedOnSportsType } from "@/common/utils-common";
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function MatchTopBar() {
     const pathname = usePathname();
     const params = useParams()
     const searchParams = useSearchParams()
+    const router = useRouter()
 
     const selectedMatchId = params.matchId
     const sportsType = searchParams.get('sportsType')
@@ -23,6 +25,12 @@ export default function MatchTopBar() {
 
     return (
         <div className="bg-white border-b p-4 shadow-md flex gap-8">
+            <button
+                onClick={() => router.push(`/${getMatchBasedOnSportsType(sportsType || "cricket")}`)}
+                className="text-gray-600 hover:text-indigo-600 font-semibold"
+            >
+                ← Back 
+            </button>
             {matchTabs.map((tab) => (
                 // <Link key={tab.href} href={tab.href}>
                 //     <a className="text-gray-600 hover:text-indigo-600 font-semibold">{tab.label}</a>

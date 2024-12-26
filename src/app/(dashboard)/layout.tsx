@@ -15,8 +15,8 @@ export default function DashboardLayout({
       <div className="flex">
           {/* Sidebar */}
           <Sidebar>
-              <SidebarItem icon={<Home size={20} />} text="Cricket" alert href="/cricket/upcoming" active={pathname.startsWith("/cricket")} />
-              <SidebarItem icon={<LayoutDashboard size={20} />} text="Football" href="/football/upcoming" active={pathname.startsWith("/football")} />
+              <SidebarItem icon={<Home size={20} />} text="Cricket" alert href="/cricket" active={pathname.startsWith("/cricket")} />
+              <SidebarItem icon={<LayoutDashboard size={20} />} text="Football" href="/football" active={pathname.startsWith("/football")} />
               <SidebarItem icon={<StickyNote size={20} />} text="Basket Ball" alert href="/basketball" active={pathname === "/basketball"} />
               <SidebarItem icon={<Calendar size={20} />} text="Volley Ball" href="/volleyball" active={pathname === "/volleyball"}/>
               <SidebarItem icon={<Layers size={20} />} text="Tasks" href="/tasks" />

@@ -88,22 +88,42 @@ export interface ContestListResponse {
     contestList: Contest[];
 }
 
-
-
-const getContestList = async ({matchId}: {matchId: string}): Promise<ApiResponse<ContestListResponse>> => {
-    const url = `contest/list/${matchId}`; // Adjust if the endpoint path is different
-    return await makeApiCall<ContestListResponse>(API_CALL_TYPE.HTTP_GET, url);
-};
+interface DeleteContestResponse {
+    status: boolean;
+}
 
 const addContest = async ({ contestData}: { contestData: ContestIn}): Promise<ApiResponse<Contest>> => {
     const url = "contest/add"; 
     return await makeApiCall<Contest>(API_CALL_TYPE.HTTP_POST, url, contestData);
 };
 
+const getContestList = async ({matchId}: {matchId: string}): Promise<ApiResponse<ContestListResponse>> => {
+    const url = `contest/list/${matchId}`; 
+    return await makeApiCall<ContestListResponse>(API_CALL_TYPE.HTTP_GET, url);
+};
+
+const getContest = async ({contestId}: {contestId: string}): Promise<ApiResponse<Contest>> => {
+    const url = `contest/get/${contestId}`; 
+    return await makeApiCall<Contest>(API_CALL_TYPE.HTTP_GET, url);
+};
+
+const updateContest = async ({contestId, contestData}: {contestId: string, contestData: ContestIn}): Promise<ApiResponse<Contest>> => {
+    const url = `contest/update/${contestId}`; 
+    return await makeApiCall<Contest>(API_CALL_TYPE.HTTP_PUT, url, contestData);
+};
+
+const deleteContest = async ({contestId}: {contestId: string}): Promise<ApiResponse<DeleteContestResponse>> => {
+    const url = `contest/delete/${contestId}`; 
+    return await makeApiCall<DeleteContestResponse>(API_CALL_TYPE.HTTP_DELETE, url);
+};
+
 // Export contest repository functions
-export const contestRepository = {
-    getContestList,
+export const contestRepository = {    
     addContest,
+    getContestList,
+    getContest,
+    updateContest,
+    deleteContest,
 };
 
 
