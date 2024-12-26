@@ -1,5 +1,7 @@
 "use client"
 import { Textfield } from "@/app/atom/textfield";
+import { DeleteDialog } from "@/app/molecules/delete-dialog";
+// import { DeleteDialog } from "@/app/molecules/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
     Select,
@@ -14,7 +16,7 @@ import { handleError } from "@/helpers/errors";
 import Yup from "@/helpers/yup";
 import useForm from "@/hooks/use-form";
 import { Player, playerRepository } from "@/server/repository/player-repository";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Toast } from "primereact/toast";
 import { useEffect, useRef, useState } from "react";
 
@@ -24,6 +26,7 @@ export const PlayerSettingsResource = ({ playerDetails }: { playerDetails: Playe
     // const params = useParams()
     const toast = useRef<Toast>(null);
     const router = useRouter();
+    const searchParams = useSearchParams()
     const playerApi = playerRepository
 
     const playerTypes = ["wicketkeeper", "batsman", "all-rounder", "bowler"];
@@ -32,6 +35,24 @@ export const PlayerSettingsResource = ({ playerDetails }: { playerDetails: Playe
     const show = () => {
         toast.current?.show({ severity: 'success', summary: 'Info', detail: 'Your player details has been updated successfully' });
     };
+
+    const handleDelete = async() => {
+        try {
+            const response = await playerApi.deletePlayer({
+                playerId: playerDetails.id,
+            })
+            console.log("++++", response)
+
+            if (response.isSuccess) {
+                console.log('Player deleted successfully!', response.data);
+                router.push(`/match/${playerDetails.matchId}/contests?sportsType=${searchParams.get('sportsType')}`);
+                router.refresh();
+                show();
+            }
+        } catch (error) {
+            handleError(error)
+        }
+    }
 
     const {values, handleChange, handleSubmit, resetValues, isLoading} = useForm({
         initialValues: {
@@ -229,6 +250,15 @@ export const PlayerSettingsResource = ({ playerDetails }: { playerDetails: Playe
                     </div>
                 </div>
             </div>
+
+            <div className="border border-b-2 p-4">
+            <h1 className={"text-lg font-semibold py-4"}>Delete And Deactivate Account</h1>
+                <div className={"text-sm pb-4"}>This action cannot be undone. This will permanently delete your account and remove your data from our servers.</div>
+                <div className={"flex flex-row gap-2 py-2"}>
+                    <DeleteDialog  onDelete={handleDelete}/>
+                </div>
+            </div>
+
         </div>
     );
 };

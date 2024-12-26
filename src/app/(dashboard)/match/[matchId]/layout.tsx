@@ -16,7 +16,7 @@ export default function MatchLayout({
 
     return (
         <div className="flex">
-            <div className="flex-1">
+            <div className="flex-1 h-screen overflow-y-auto">
                 {/* <MatchTopBar /> */}
                 {showTopBar && <MatchTopBar />}
                 {children}
