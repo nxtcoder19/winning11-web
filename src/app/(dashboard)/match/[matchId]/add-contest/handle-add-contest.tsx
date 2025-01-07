@@ -4,7 +4,7 @@ import { handleError } from '@/helpers/errors';
 import Yup from '@/helpers/yup';
 import useForm from '@/hooks/use-form';
 import { contestRepository } from '@/server/repository/contest-repository';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
@@ -28,6 +28,8 @@ export const HandleAddContest = () => {
     const params = useParams()
     const toast = useRef<Toast>(null);
     const router = useRouter();
+    const searchParams = useSearchParams()
+
     // const matchId = params.matchId
     const matchId = Array.isArray(params.matchId) ? params.matchId[0] : params.matchId;
 
@@ -97,7 +99,7 @@ export const HandleAddContest = () => {
                 if (response.isSuccess) {
                     console.log('Contest added successfully!', response.data);                    
                     show();
-                    router.push(`/match/${matchId}/contests`);                    
+                    router.push(`/match/${matchId}/contests?sportsType=${searchParams.get('sportsType')}`);                    
                 }
             } catch (error) {
                 handleError(error)
@@ -123,8 +125,19 @@ export const HandleAddContest = () => {
     // };
 
     return (
-        <div className="card flex-1 justify-content-center">   
+        <div className="flex flex-col card flex-1 justify-content-center gap-4">   
             <Toast ref={toast} position="bottom-left"/>     
+            <div className="flex flex-row items-center justify-between gap-4 py-2 border-b-2 border-dashed">
+                <button
+                    onClick={() => router.push(`/match/${matchId}/contests?sportsType=${searchParams.get('sportsType')}`)}
+                    className="text-gray-600 hover:text-indigo-600 font-semibold px-2"
+                >
+                    ← Back
+                </button>
+                <h1 className="flex text-3xl font-bold justify-center items-center flex-grow text-center">
+                    Add Contest Details
+                </h1>
+            </div>
             <Stepper  ref={stepperRef} style={{ flexBasis: '50rem' }}>
                 <StepperPanel header="Contest Details">
                     <div className="flex flex-col h-12rem">

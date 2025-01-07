@@ -1,4 +1,6 @@
 "use client"
+import { EmptyBanner } from "@/app/molecules/empty-banner";
+import { Database } from "@/icons/jenga-icons";
 import { Player } from "@/server/repository/player-repository";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "primereact/button";
@@ -19,11 +21,23 @@ export const PlayersResource = ({playersList}: {playersList: Player[]}) => {
         console.log("Row clicked:", player.playerName);
     };
 
+    if (!playersList || playersList.length === 0) {
+        return (
+            <EmptyBanner
+                title="Players"
+                description="You can create your players here and manage your players"
+                iconComponent={<Database size={48} />}
+                clickEventName="Create Player"
+                onCLick={() => router.push(`/match/${params.matchId}/add-player?sportsType=${sportsType}`)}
+            />
+        )
+    }
+
     return (
         <div>
             <div className="flex flex-row justify-between items-center">
                 <h1 className="text-3xl font-bold">Players</h1>
-                <Button onClick={() => router.push(`/match/${params.matchId}/add-player`)} label="Add Player" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
+                <Button onClick={() => router.push(`/match/${params.matchId}/add-player?sportsType=${sportsType}`)} label="Add Player" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
             </div>
             <div className="card py-4">
                 <DataTable  value={playersList} paginator rows={10}

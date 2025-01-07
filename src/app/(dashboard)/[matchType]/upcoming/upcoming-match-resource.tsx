@@ -1,4 +1,6 @@
 "use client"
+import { EmptyBanner } from "@/app/molecules/empty-banner";
+import { Database } from "@/icons/jenga-icons";
 import { Match } from "@/server/repository/match-repository";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from 'primereact/button';
@@ -7,7 +9,7 @@ import { DataTable, DataTableRowClickEvent } from 'primereact/datatable';
 import { Menu } from 'primereact/menu';
 import React, { useRef } from 'react';
 
-export const UpComingMatchResource = ({ matchList }: { matchList: Match[] }) => {
+export const UpComingMatchResource = ({ matchList, matchType }: { matchList: Match[], matchType: string }) => {
 
     const pathname = usePathname();
     const router = useRouter();
@@ -67,11 +69,21 @@ export const UpComingMatchResource = ({ matchList }: { matchList: Match[] }) => 
         console.log("Row clicked:", match.matchStatus);
     };
 
+    if (!matchList || matchList.length === 0) {
+        return <EmptyBanner
+        //  heading="Upcoming Matches"
+         title="Upcoming Matches"
+         description="You can create your matches here and manage your upcoming listed matches"
+         iconComponent={<Database size={48} />}
+         clickEventName="Create Match"
+         onCLick={() => router.push(`/add-match?sportsType=${matchType}`)}/>
+    }
+
     return (
         <div>
             <div className="flex flex-row justify-between items-center">
                 <h1 className="text-3xl font-bold">Upcoming Matches</h1>
-                <Button onClick={() => router.push("/add-match?sportsType=Cricket")} label="Add Match" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
+                <Button onClick={() => router.push(`/add-match?sportsType=${matchType}`)} label="Add Match" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
             </div>
             <div className="card py-4">
                 <DataTable value={matchList} tableStyle={{ minWidth: '50rem' }}

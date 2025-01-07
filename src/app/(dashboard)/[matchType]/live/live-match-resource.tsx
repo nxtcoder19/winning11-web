@@ -1,15 +1,31 @@
 "use client"
+import { EmptyBanner } from "@/app/molecules/empty-banner";
+import { Database } from "@/icons/jenga-icons";
 import { Match } from "@/server/repository/match-repository";
+import { useRouter } from "next/navigation";
 import { Column } from 'primereact/column';
 import { DataTable, DataTableRowClickEvent } from 'primereact/datatable';
 
-export const CompletedMatchResource = ({matchList}: {matchList: Match[]}) => {
+
+export const LiveMatchResource = ({matchList, matchType}: {matchList: Match[], matchType: string}) => {
+
+    const router = useRouter();
     
     const onRowClick = (event: DataTableRowClickEvent) => {
         const match = event.data as Match; // Cast event.data to Match type
-        // router.push(`/match/${match.id}`);
+        router.push(`/match/${match.id}/contests?sportsType=${match.sportsType}`)
         console.log("Row clicked:", match.matchStatus);
     };
+
+    if (!matchList || matchList.length === 0) {
+        return <EmptyBanner
+         heading="Live Matches"
+         title="Live Matches"
+         description="You can create your matches here and manage your upcoming listed matches"
+         iconComponent={<Database size={48} />}
+         clickEventName="Create Match"
+         onCLick={() => router.push(`/add-match?sportsType=${matchType}`)}/>
+    }
 
     return (
         <div className="card">

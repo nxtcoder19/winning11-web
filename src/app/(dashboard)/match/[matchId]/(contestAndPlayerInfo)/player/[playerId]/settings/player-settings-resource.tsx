@@ -255,7 +255,7 @@ export const PlayerSettingsResource = ({ playerDetails }: { playerDetails: Playe
             <h1 className={"text-lg font-semibold py-4"}>Delete And Deactivate Account</h1>
                 <div className={"text-sm pb-4"}>This action cannot be undone. This will permanently delete your account and remove your data from our servers.</div>
                 <div className={"flex flex-row gap-2 py-2"}>
-                    <DeleteDialog  onDelete={handleDelete}/>
+                    <DeleteDialog deleteContent="Delete Player"  onDelete={handleDelete}/>
                 </div>
             </div>
 
