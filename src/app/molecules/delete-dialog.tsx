@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Textfield } from "../atom/textfield";
 
-export const DeleteDialog = ({ onDelete }: { onDelete: () => void }) => {
+export const DeleteDialog = ({ deleteContent,onDelete }: { deleteContent: string, onDelete: () => void }) => {
 
     const [textInput, setTextInput] = useState('')
 
@@ -19,7 +19,7 @@ export const DeleteDialog = ({ onDelete }: { onDelete: () => void }) => {
         <AlertDialog>
             <AlertDialogTrigger asChild>
                 {/*<Button variant="outline">Show Dialog</Button>*/}
-                <Button variant="destructive">Delete Account</Button>
+                <Button className="bg-red-500 text-white hover:bg-red-600" variant="destructive">{deleteContent}</Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-white">
                 <AlertDialogHeader>

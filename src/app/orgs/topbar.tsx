@@ -19,6 +19,16 @@ export default function TopBar() {
             { label: "Live", href: "/football/live" },
             { label: "Completed", href: "/football/completed" },
         ],
+        "/basketball": [
+            { label: "Upcoming", href: "/basketball/upcoming" },
+            { label: "Live", href: "/basketball/live" },
+            { label: "Completed", href: "/basketball/completed" },
+        ],
+        "/volleyball": [
+            { label: "Upcoming", href: "/volleyball/upcoming" },
+            { label: "Live", href: "/volleyball/live" },
+            { label: "Completed", href: "/volleyball/completed" },
+        ],
         // Add more routes and tabs as needed
     };
 

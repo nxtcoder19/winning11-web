@@ -8,7 +8,7 @@ export default async function Home() {
   console.log("cookie", cookie?.name)
 
   if (cookie?.name === "w11-Sessionid") {
-    redirect('/cricket/upcoming');
+    redirect('/cricket');
   } else {
     redirect('/login');
   }

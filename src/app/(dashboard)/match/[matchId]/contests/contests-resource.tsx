@@ -1,9 +1,12 @@
 "use client"
+import { EmptyBanner } from "@/app/molecules/empty-banner";
+import { Database } from "@/icons/jenga-icons";
 import { Contest } from "@/server/repository/contest-repository";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "primereact/button";
 import { Column } from 'primereact/column';
 import { DataTable, DataTableRowClickEvent } from 'primereact/datatable';
+
 
 export const ContestsResource = ({contestList}: {contestList: Contest[]}) => {
 
@@ -19,11 +22,21 @@ export const ContestsResource = ({contestList}: {contestList: Contest[]}) => {
         console.log("Row clicked:", contest.contestName);
     };
 
+    if (!contestList || contestList.length === 0) {
+        return <EmptyBanner
+            title="Contests"
+            description="You can create your contests here and manage your contests"
+            iconComponent={<Database size={48} />}
+            clickEventName="Create Contest"
+            onCLick={() => router.push(`/match/${params.matchId}/add-contest?sportsType=${sportsType}`)}
+        />
+    }
+
     return (
         <div>
             <div className="flex flex-row justify-between items-center">
                 <h1 className="text-3xl font-bold">Contests</h1>
-                <Button onClick={() => router.push(`/match/${params.matchId}/add-contest`)} label="Add Contest" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
+                <Button onClick={() => router.push(`/match/${params.matchId}/add-contest?sportsType=${sportsType}`)} label="Add Contest" icon="pi pi-plus" className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2" />
             </div>
             <div className="card py-4">
                 <DataTable  value={contestList} 

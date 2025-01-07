@@ -14,13 +14,14 @@ import { handleError } from "@/helpers/errors";
 import Yup from "@/helpers/yup";
 import useForm from "@/hooks/use-form";
 import { playerRepository } from "@/server/repository/player-repository";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Toast } from "primereact/toast";
 import { useRef } from "react";
 
 export const HandleAddPlayer = () => {
 
     const params = useParams()
+    const searchParams = useSearchParams()
     const toast = useRef<Toast>(null);
     const router = useRouter();
 
@@ -78,7 +79,8 @@ export const HandleAddPlayer = () => {
                 if (response.isSuccess) {
                     console.log('Player added successfully!', response.data);                    
                     show();
-                    router.push(`/match/${matchId}/players`);                    
+                    router.push(`/match/${matchId}/players?sportsType=${searchParams.get('sportsType')}`);                    
+                    router.refresh();
                 }
             } catch (error) {
                 handleError(error)
@@ -87,125 +89,137 @@ export const HandleAddPlayer = () => {
     })
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4">
           <Toast ref={toast} position="bottom-left"/>     
-          <h1 className="text-3xl font-bold">Add Player Details</h1>
-
-          <div className={"flex flex-row justify-between gap-2 py-2"}>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Player Name</span>
-              <Textfield
-                  placeholder={"Enter your name"}
-                  value={values.playerName}
-                  type="text"
-                  name="playerName"
-                  onChange={handleChange("playerName")}
-              />
-            </div>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Display Name</span>
-              <Textfield 
-                  placeholder={"Enter your name"} 
-                  value={values.displayName}
-                  type="text"
-                  name="displayName"
-                  onChange={handleChange("displayName")}
-              /> 
-            </div>
+          <div className="flex flex-row items-center justify-between gap-4 py-2 border-b-2 border-dashed">
+              <button
+                  onClick={() => router.push(`/match/${matchId}/contests?sportsType=${searchParams.get('sportsType')}`)}
+                  className="text-gray-600 hover:text-indigo-600 font-semibold px-2"
+              >
+                  ← Back
+              </button>
+              <h1 className="flex text-3xl font-bold justify-center items-center flex-grow text-center">
+                  Add Player Details
+              </h1>
           </div>
 
-          <div className={"flex flex-row justify-between gap-2 py-2"}>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Team Name</span>
-              <Textfield
-                  placeholder={"Enter your name"}
-                  value={values.teamName}
-                  type="text"
-                  name="teamName"
-                  onChange={handleChange("teamName")}
-              />
+          <div className="p-4">
+            <div className={"flex flex-row justify-between gap-2 py-2"}>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Player Name</span>
+                <Textfield
+                    placeholder={"Enter your name"}
+                    value={values.playerName}
+                    type="text"
+                    name="playerName"
+                    onChange={handleChange("playerName")}
+                />
+              </div>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Display Name</span>
+                <Textfield 
+                    placeholder={"Enter your name"} 
+                    value={values.displayName}
+                    type="text"
+                    name="displayName"
+                    onChange={handleChange("displayName")}
+                /> 
+              </div>
             </div>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Player Image</span>
-              <Textfield 
-                  placeholder={"Enter your name"} 
-                  value={values.playerImage}
-                  type="text"
-                  name="playerImage"
-                  onChange={handleChange("playerImage")}
-              /> 
-            </div>
-          </div>
 
-          <div className={"flex flex-row justify-between gap-2 py-2"}>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Player Points</span>
-              <Textfield
-                  placeholder={"Enter your name"}
-                  value={String(values.playerPoints)}
-                  type="number"
-                  name="playerPoints"
-                  onChange={handleChange("playerPoints")}
-              />
+            <div className={"flex flex-row justify-between gap-2 py-2"}>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Team Name</span>
+                <Textfield
+                    placeholder={"Enter your name"}
+                    value={values.teamName}
+                    type="text"
+                    name="teamName"
+                    onChange={handleChange("teamName")}
+                />
+              </div>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Player Image</span>
+                <Textfield 
+                    placeholder={"Enter your name"} 
+                    value={values.playerImage}
+                    type="text"
+                    name="playerImage"
+                    onChange={handleChange("playerImage")}
+                /> 
+              </div>
             </div>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Player Credit</span>
-              <Textfield 
-                  placeholder={"Enter your name"} 
-                  value={String(values.playerCredit)}
-                  type="number"
-                  name="playerCredit"
-                  onChange={handleChange("playerCredit")}
-              /> 
-            </div>
-          </div>
 
-          <div className={"flex flex-row justify-between gap-2 py-2"}>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Player Status</span>
-              <Select onValueChange={(value) => handleChange("playerStatus")({ target: { value } })}>
-                <SelectTrigger className="w-full border border-solid border-gray-300 rounded">
-                  <SelectValue placeholder="Select Player Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Player Status</SelectLabel>
-                    {playerStatus.map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+            <div className={"flex flex-row justify-between gap-2 py-2"}>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Player Points</span>
+                <Textfield
+                    placeholder={"Enter your name"}
+                    value={String(values.playerPoints)}
+                    type="number"
+                    name="playerPoints"
+                    onChange={handleChange("playerPoints")}
+                />
+              </div>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Player Credit</span>
+                <Textfield 
+                    placeholder={"Enter your name"} 
+                    value={String(values.playerCredit)}
+                    type="number"
+                    name="playerCredit"
+                    onChange={handleChange("playerCredit")}
+                /> 
+              </div>
             </div>
-            <div className={"flex-1"}>
-              <span className={"text-sm font-medium"}>Player Type</span>
-              <Select onValueChange={(value) => handleChange("playerType")({ target: { value } })}>
-                <SelectTrigger className="w-full border border-solid border-gray-300 rounded">
-                  <SelectValue placeholder="Select Player Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Player Types</SelectLabel>
-                    {playerTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+
+            <div className={"flex flex-row justify-between gap-2 py-2"}>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Player Status</span>
+                <Select onValueChange={(value) => handleChange("playerStatus")({ target: { value } })}>
+                  <SelectTrigger className="w-full border border-solid border-gray-300 rounded">
+                    <SelectValue placeholder="Select Player Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Player Status</SelectLabel>
+                      {playerStatus.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status.charAt(0).toUpperCase() + status.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className={"flex-1"}>
+                <span className={"text-sm font-medium"}>Player Type</span>
+                <Select onValueChange={(value) => handleChange("playerType")({ target: { value } })}>
+                  <SelectTrigger className="w-full border border-solid border-gray-300 rounded">
+                    <SelectValue placeholder="Select Player Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Player Types</SelectLabel>
+                      {playerTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
 
-          <div className="flex justify-end">
-            <Button className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2"
-              onClick={handleSubmit}
-              // disabled={isLoading || !isModified}
-            >{isLoading ? "Saving..." : "Save Changes"}</Button>
-          </div>
+            <div className="flex justify-end">
+              <Button className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2"
+                onClick={handleSubmit}
+                // disabled={isLoading || !isModified}
+              >{isLoading ? "Saving..." : "Save Changes"}</Button>
+            </div>
 
-        </div>
+          </div>
+          </div>
     )
 }

@@ -45,3 +45,15 @@ export const formatDate = (date: Nullable<Date>) => {
         return "volleyball";
     }
 }
+
+export const getMatchType = (sportsType: string) => {
+    if (sportsType === "cricket") { 
+      return "Cricket";
+    } else if (sportsType === "football") {
+      return "Football";
+    } else if (sportsType === "basketball") {
+      return "Basketball";
+    } else if (sportsType === "volleyball") {
+      return "Volleyball";
+    }
+}

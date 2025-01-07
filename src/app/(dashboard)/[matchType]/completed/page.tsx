@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getMatchType } from "@/common/utils-common";
 import { matchRepository } from "@/server/repository/match-repository";
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css';
@@ -10,13 +12,14 @@ async function getMatchList() {
     return response;
 }
 
-export default async function Home() {
+export default async function Home(props: any) {
+    const matchType = getMatchType(props.params.matchType)
     const matchDetails = await getMatchList();
-    const matchList = matchDetails.data?.matchList.filter(match => match.matchStatus === "Completed" && match.sportsType === "Cricket")
+    const matchList = matchDetails.data?.matchList.filter(match => match.matchStatus === "Completed" && match.sportsType === matchType)
 
     return (
         <div className="p-4">
-            <CompletedMatchResource matchList={matchList || []}/>
+            <CompletedMatchResource matchList={matchList || []} matchType={matchType || ""}/>
         </div>
     )
 }

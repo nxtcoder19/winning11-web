@@ -1,11 +1,22 @@
 "use client"
 import { Textfield } from "@/app/atom/textfield";
+import { DeleteDialog } from "@/app/molecules/delete-dialog";
+import { getMatchBasedOnSportsType } from "@/common/utils-common";
 import { Button } from "@/components/ui/button";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { handleError } from "@/helpers/errors";
 import Yup from "@/helpers/yup";
 import useForm from "@/hooks/use-form";
 import { Match, matchRepository } from "@/server/repository/match-repository";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Toast } from 'primereact/toast';
 import { useEffect, useRef, useState } from "react";
 
@@ -14,10 +25,33 @@ export const MatchSettings = ({matchDetails}: {matchDetails: Match}) => {
     const matchApi = matchRepository
     const router = useRouter();
     const toast = useRef<Toast>(null);
+    const searchParams = useSearchParams()
+
+    const matchStatus = ["Upcoming", "Live", "Completed"];
 
     const show = () => {
         toast.current?.show({ severity: 'success', summary: 'Info', detail: 'Your match details has been updated successfully' });
     };
+
+    const matchPath = getMatchBasedOnSportsType(searchParams.get('sportsType') || 'cricket')
+
+    const handleDelete = async() => {
+        try {
+            const response = await matchApi.deleteMatch({
+                matchId: matchDetails.id,
+            })
+            console.log("++++", response)
+
+            if (response.isSuccess) {
+                console.log('Match deleted successfully!', response.data);                
+                router.push(`/${matchPath}`);
+                router.refresh();                
+                show();
+            }
+        } catch (error) {
+            handleError(error)
+        }
+    }
 
     const {values, handleChange, handleSubmit, resetValues, isLoading} = useForm({
         initialValues: {
@@ -124,13 +158,30 @@ export const MatchSettings = ({matchDetails}: {matchDetails: Match}) => {
                     </div>
                     <div className={"flex-1"}>
                         <span className={"text-sm font-medium"}>Match Status</span>
-                        <Textfield 
+                        <Select 
+                            value={values.matchStatus}
+                            onValueChange={(value) => handleChange("matchStatus")({ target: { value } })}>
+                            <SelectTrigger className="w-full border border-solid border-gray-300 rounded">
+                                <SelectValue placeholder="Select Player Status" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white">
+                                <SelectGroup>
+                                    <SelectLabel>Player Status</SelectLabel>
+                                    {matchStatus.map((status) => (
+                                        <SelectItem key={status} value={status}>
+                                            {status.charAt(0).toUpperCase() + status.slice(1)}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        {/* <Textfield 
                             placeholder={"Enter your name"} 
                             value={values.matchStatus}
                             type="text"
                             name="matchStatus"
                             onChange={handleChange("matchStatus")}
-                        /> 
+                        />  */}
                     </div>
                 </div>
                 <div className={"flex flex-row justify-between gap-2 py-2"}>
@@ -216,6 +267,15 @@ export const MatchSettings = ({matchDetails}: {matchDetails: Match}) => {
                     </div>
                 </div>
             </div>
+
+            <div className="border border-b-2 p-4">
+            <h1 className={"text-lg font-semibold py-4"}>Delete And Deactivate Account</h1>
+                <div className={"text-sm pb-4"}>This action cannot be undone. This will permanently delete your account and remove your data from our servers.</div>
+                <div className={"flex flex-row gap-2 py-2"}>
+                    <DeleteDialog deleteContent="Delete Match"  onDelete={handleDelete}/>
+                </div>
+            </div>
+
         </div>
     )
 }
