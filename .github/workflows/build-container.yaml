@@ -7,7 +7,7 @@ on:
     paths:
       - ".github/workflows/build-container.yaml"
       - "Dockerfile"
-  pull_requests:
+  pull_request:
     branches:
       - main
     
