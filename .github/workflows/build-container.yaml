@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - impl/cicd
     paths:
       - ".github/workflows/build-container.yaml"
       - "Dockerfile"
