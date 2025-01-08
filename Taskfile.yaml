@@ -24,7 +24,7 @@ tasks:
     dotenv:
       - .secrets/env
     cmds:
-      - PORT=4000 pnpm start
+      - PORT=3000 pnpm start
 
   init:shacdn:
     cmds:
@@ -40,18 +40,18 @@ tasks:
       - sh: '[[ -n "{{.tag}}" ]]'
         msg: "var tag must have a value"
     vars:
-      Image: ghcr.io/kloudlite/web/events:{{.tag}}
+      Image: ghcr.io/nxtcoder19/web/winning11:{{.tag}}
     cmds:
-      - docker buildx build  . -t {{.Image}}
+      - docker build  . -t {{.Image}}
 
   container:push:
     preconditions:
       - sh: '[[ -n "{{.tag}}" ]]'
         msg: "var tag must have a value"
     vars:
-      Image: ghcr.io/nxtcoder19/web/events:{{.tag}}
+      Image: ghcr.io/nxtcoder19/web/winning11:{{.tag}}
     cmds:
-      - docker buildx build -t {{.Image}} --platform linux/amd64 --push .
-      # - docker buildx build . -t {{.Image}} --platform linux/amd64,linux/arm64 --output=type=image,compression=zstd,force-compression=true,compression-level=12,push=true
+      # - docker buildx build -t {{.Image}} --platform linux/amd64 --push .
+      - docker buildx build . -t {{.Image}} --platform linux/amd64,linux/arm64 --output=type=image,compression=zstd,force-compression=true,compression-level=12,push=true
       # - docker build -t {{.Image}} .
       # - docker push {{.Image}}

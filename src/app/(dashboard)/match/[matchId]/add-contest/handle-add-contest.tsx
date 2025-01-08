@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { Textfield } from '@/app/atom/textfield';
 import { handleError } from '@/helpers/errors';
@@ -12,10 +13,11 @@ import { Toast } from 'primereact/toast';
 import { useRef, useState } from "react";
 
 
-type StepperRefType = {
-    nextCallback: () => void;
-    prevCallback: () => void;
-};
+// type StepperRefType = {
+//     nextCallback: () => void;
+//     prevCallback: () => void;
+// };
+
 
 export const HandleAddContest = () => {
 
@@ -24,7 +26,9 @@ export const HandleAddContest = () => {
 
     // const stepperRef = useRef(null);
     const contestApi = contestRepository
-    const stepperRef = useRef<StepperRefType | null>(null);
+    // const stepperRef = useRef<StepperRefType | null>(null);
+    const stepperRef = useRef<any>(null);
+
     const params = useParams()
     const toast = useRef<Toast>(null);
     const router = useRouter();
@@ -99,7 +103,8 @@ export const HandleAddContest = () => {
                 if (response.isSuccess) {
                     console.log('Contest added successfully!', response.data);                    
                     show();
-                    router.push(`/match/${matchId}/contests?sportsType=${searchParams.get('sportsType')}`);                    
+                    router.push(`/match/${matchId}/contests?sportsType=${searchParams.get('sportsType')}`);
+                    router.refresh();
                 }
             } catch (error) {
                 handleError(error)
@@ -138,7 +143,7 @@ export const HandleAddContest = () => {
                     Add Contest Details
                 </h1>
             </div>
-            <Stepper  ref={stepperRef} style={{ flexBasis: '50rem' }}>
+            <Stepper  ref={stepperRef} >
                 <StepperPanel header="Contest Details">
                     <div className="flex flex-col h-12rem">
                         {/* <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">Content I</div> */}
