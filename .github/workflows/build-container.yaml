@@ -49,7 +49,7 @@ jobs:
       - name: Set Image Tag
         id: tag
         run: |
-          if [[ "${{ github.ref }}" == refs/heads/* ]]; then
+          if [[ "${{ github.ref }}" == refs/heads/main ]]; then
             echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
             echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
