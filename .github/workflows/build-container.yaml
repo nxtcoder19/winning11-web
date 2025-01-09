@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - release-*
     paths:
       - ".github/workflows/build-container.yaml"
       - "Dockerfile"
@@ -13,6 +14,7 @@ on:
   pull_request:
     branches:
       - main
+      - release-*
 
 permissions:
   contents: read
@@ -51,19 +53,22 @@ jobs:
             echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
             echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == refs/heads/release-* ]]; then
+            release_version=$(echo "${{ github.ref_name }}" | sed 's/release-//')
+            echo "tag=${release_version}-nightly" >> $GITHUB_ENV
           else
             echo "tag=latest" >> $GITHUB_ENV
           fi
 
       - name: Build Docker Image (Non-Main/Non-Tag)
-        if: ${{ !startsWith(github.ref, 'refs/tags/') && !startsWith(github.ref, 'refs/heads/main') }}
+        if: ${{ !startsWith(github.ref, 'refs/tags/') && !startsWith(github.ref, 'refs/heads/main') && !startsWith(github.ref, 'refs/heads/release-') }}
         run: |
           image_name=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           docker build -t "$image_name:latest" .
 
       # Push the Docker image to GHCR
       - name: Build and Push Docker Image (Tags or Main)
-        if: ${{ startsWith(github.ref, 'refs/tags/') || startsWith(github.ref, 'refs/heads/main') }}
+        if: ${{ startsWith(github.ref, 'refs/tags/') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/release-') }}
         run: |
           image_name=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           docker build . -t "$image_name:${{ env.tag }}" --push
